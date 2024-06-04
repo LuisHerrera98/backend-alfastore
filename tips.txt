@@ -13,4 +13,4 @@
     - pm2 list
 7- Detener un servicio 
 
-pm2 start npm --name "backend-trendsneakers" -- start
+pm2 start npm --name "backend-trendsneakers" -- start:prod
