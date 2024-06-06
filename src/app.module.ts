@@ -6,6 +6,8 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SizeModule } from './size/size.module';
+import { ProductModule } from './product/product.module';
+import { SellModule } from './sell/sell.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { SizeModule } from './size/size.module';
     ),
     CategoryModule,
     SizeModule,
+    ProductModule,
+    SellModule,
   ],
   controllers: [AppController],
   providers: [AppService],

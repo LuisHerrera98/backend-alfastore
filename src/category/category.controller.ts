@@ -30,8 +30,7 @@ export class CategoryController {
   ) {
     const imageArray = await this.fileService.uploadImageToCloudinary(image);
     createCategoryDto.image = imageArray;
-    console.log(createCategoryDto);
-    
+
     return this.categoryService.create(createCategoryDto);
   }
 

@@ -1,12 +1,12 @@
 import { IsString, MinLength } from 'class-validator';
 
-export class CreateSizeDto {
+export class CategoryAndSizeId {
   @IsString()
   @MinLength(1)
-  name: string;
+  size_id: string;
 
   @IsString()
+  @MinLength(1)
   category_id: string;
-
-  unique?: string
 }
+

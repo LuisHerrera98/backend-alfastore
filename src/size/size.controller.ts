@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { SizeService } from './size.service';
 import { CreateSizeDto } from './dto/create-size.dto';
 import { UpdateSizeDto } from './dto/update-size.dto';
@@ -13,22 +13,7 @@ export class SizeController {
   }
 
   @Get(':category_id')
-  findAllByCategoryId(@Param('category_id') id: string) {
-    return this.sizeService.findAllByCategoryId('category_id');
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.sizeService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSizeDto: UpdateSizeDto) {
-    return this.sizeService.update(+id, updateSizeDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.sizeService.remove(+id);
+  findAllByCategoryId(@Param('category_id') category_id: string) {
+    return this.sizeService.findAllByCategoryId(category_id);
   }
 }

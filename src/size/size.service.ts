@@ -14,7 +14,7 @@ export class SizeService {
 
   constructor(
     @InjectModel(Size.name)
-    private readonly sizeModel: Model<Size>
+    private readonly sizeModel: Model<Size>,
   ){}
 
 
@@ -44,7 +44,7 @@ export class SizeService {
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(
-        `Can't create size - Check server logs`,
+        `Can't get sizes - Check server logs`,
       );
     }
   }
@@ -53,9 +53,7 @@ export class SizeService {
     return `This action returns a #${id} size`;
   }
 
-  update(id: number, updateSizeDto: UpdateSizeDto) {
-    return `This action updates a #${id} size`;
-  }
+  
 
   remove(id: number) {
     return `This action removes a #${id} size`;
