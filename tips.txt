@@ -1,0 +1,14 @@
+1- Ver si un puerto esta ocupado y eliminarlo
+    - lsof -i :3002
+    - kill <process_id>
+
+2- La configuracion de un nuevo dominio se hace con proxy por medio de NGINX y agregando la conf de cerbot para ssl
+3- Los proyectos estan dentro de /var/proyectos/
+4- Eliminar una carpeta y contenido (Si no se borra acceder con super usuario: sudo su)
+    - rm -R <dir>
+5- Permiso total a una carpeta y su contenido adentro (sudo su)
+    - chmod 777 -R <dir>
+6- Ver servicios corriendo
+    - nvm use 20
+    - pm2 list
+7- Detener un servicio 
