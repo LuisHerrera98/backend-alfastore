@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { DateSell } from './entities/sell.entity';
 import { Sell } from './entities/sell.entity';
 import { CreateSellDto } from './dto/create-sell.dto';
@@ -61,4 +61,28 @@ export class SellService {
 
     return sell;
   }
+
+  async findDateSells() {
+    try {
+      const dateSells = await this.dateSellModel
+        .find({})
+        .sort({date: -1})
+      return dateSells;
+    } catch (error) {
+      throw new BadRequestException('Error al obtener las ventas por fecha: ' + error.message);
+    }
+   }
+
+   async getSellsByDateSellId (dateSellId: Types.ObjectId) {
+    try {
+      const sells = await this.sellModel
+        .find({
+          dateSell_id: dateSellId
+        })
+        .sort({date: -1})
+      return sells;
+    } catch (error) {
+      throw new BadRequestException('Error al obtener las ventas por fecha: ' + error.message);
+    }
+   }
 }

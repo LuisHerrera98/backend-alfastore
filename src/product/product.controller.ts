@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -47,15 +48,18 @@ export class ProductController {
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-
     console.log(updateProductDto);
-    
+
     return this.productService.update(id, updateProductDto);
   }
 
   @Get('by-size/:sizeId')
-  async getAllBySizeId(@Param('sizeId') sizeId: string) {
-    return this.productService.findAllBySizeId(sizeId);
+  async getAllBySizeId(
+    @Param('sizeId') sizeId: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 8,
+  ) {
+    return this.productService.findAllBySizeId(sizeId, page, limit);
   }
 
   @Patch(':id/increment/:sizeId')
@@ -72,5 +76,10 @@ export class ProductController {
     @Param('sizeId') sizeId: string,
   ) {
     return this.productService.decrementQuantity(id, sizeId);
+  }
+
+  @Get('inversion')
+  async getInversion() {
+    return this.productService.getInversion();
   }
 }

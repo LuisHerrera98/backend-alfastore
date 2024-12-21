@@ -3,8 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { DateSell, DateSellSchema } from './entities/sell.entity';
 import { Sell, SellSchema } from './entities/sell.entity';
 import { SellService } from './sell.service';
+import { SellController } from './sell.controller';
 
 @Module({
+  controllers: [SellController],
   imports: [
     MongooseModule.forFeature([
       { name: DateSell.name, schema: DateSellSchema },

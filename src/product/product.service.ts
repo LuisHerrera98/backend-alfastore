@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -42,16 +42,46 @@ export class ProductService {
     );
   }
 
-  async findAllBySizeId(sizeId: string) {
-    return this.productModel.find({
-      'stock': {
-        $elemMatch: {
-          'size_id': sizeId,
-          'quantity': { $gt: 0 }
+  async findAllBySizeId(sizeId: string, page: number = 1, limit: number = 8): Promise<any> {
+    const skip = (page - 1) * limit;
+   
+    const [products, total] = await Promise.all([
+      this.productModel.find({
+        'stock': {
+          $elemMatch: {
+            'size_id': sizeId,
+            'quantity': { $gt: 0 }
+          }
         }
-      }
-    });
-  }
+      })
+      .skip(skip)
+      .limit(limit)
+      .sort({ _id: -1 })
+      .lean(),
+      
+      this.productModel.countDocuments({
+        'stock': {
+          $elemMatch: {
+            'size_id': sizeId,
+            'quantity': { $gt: 0 } 
+          }
+        }
+      })
+    ]);
+   
+    return {
+      data: products.map(product => ({
+        ...product,
+        images: product.images.map((img: any) => ({
+          url: img.url,
+          publicId: img.publicId
+        }))
+      })),
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    };
+   }
 
   async incrementQuantity(productId: string, sizeId: string) {
     const product = await this.productModel.findOneAndUpdate(
@@ -106,5 +136,25 @@ export class ProductService {
       },
       { new: true }
     );
+  }
+
+  async getInversion(){
+    try {
+      const products = await this.productModel.find();
+      
+      const totalInversion = products.reduce((total, product) => {
+        const stockValue = product.stock.reduce((acc, item) => {
+          return acc + (item.quantity * product.cost);
+        }, 0);
+        return total + stockValue;
+      }, 0);
+   
+      return {
+        totalInversion,
+        message: 'Cálculo exitoso'
+      };
+    } catch (error) {
+      throw new BadRequestException('Error al calcular la inversión: ' + error.message);
+    }
   }
 }
