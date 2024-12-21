@@ -3,7 +3,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './entities/product.entity';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { SellService } from 'src/sell/sell.service';
 
 @Injectable()
@@ -155,6 +155,16 @@ export class ProductService {
       };
     } catch (error) {
       throw new BadRequestException('Error al calcular la inversión: ' + error.message);
+    }
+  }
+
+  async delete(id: ObjectId) {
+    try {
+      await this.productModel.deleteOne({
+        _id: id
+      })
+    } catch (error) {
+      new BadRequestException('no se pudo eliminar')
     }
   }
 }

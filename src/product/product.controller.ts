@@ -15,6 +15,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FileService } from 'src/file/file.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { ObjectId } from 'mongoose';
 
 @Controller('V1/product')
 export class ProductController {
@@ -81,5 +82,12 @@ export class ProductController {
   @Get('inversion')
   async getInversion() {
     return this.productService.getInversion();
+  }
+
+  @Delete(':id')
+  async delete( @Param('id') id: ObjectId, ) {
+    console.log(id);
+    
+    return this.productService.delete(id);
   }
 }
